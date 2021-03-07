@@ -38,11 +38,11 @@ int colorChange()
   while(true)
   {
     Vision.setLedColor(0, 0, 255);
-    wait(0.5, sec);
+    wait(0.27, sec);
     Vision.setLedColor(255, 0, 0);
-    wait(0.5, sec);
+    wait(0.27, sec);
     Vision.setLedColor(0, 255, 0);
-    wait(0.5, sec);
+    wait(0.27, sec);
   }
   return 0;
 }
