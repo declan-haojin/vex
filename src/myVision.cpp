@@ -50,7 +50,7 @@ int colorChange()
 void approach(double totalDis, double pw)
 {
   task ColorChange = task(colorChange);
-  Vision.setBrightness(66);
+  Vision.setBrightness(67);
   Vision.setLedColor(0, 255, 0);
   chassis_reset();
   float kp = 0.9;
