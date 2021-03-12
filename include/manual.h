@@ -1,15 +1,17 @@
 #include "vex.h"
 
 void chassis_manual();
+void grab_manual();
 void lift_manual();
-void vision_manual();
+void arm_manual();
+
+// void vision_manual();
 
 int detect_greatest_pitch_angle_callback();
 
 void self_check();
 void prepare_session();
 
-////////////////////////////// CONTROLLER SETTING //////////////////////////////
 #define AXIS_1        controller1.Axis1.value()
 #define AXIS_2        controller1.Axis2.value()
 #define AXIS_3        controller1.Axis3.value()
@@ -27,16 +29,11 @@ void prepare_session();
 #define BUTTON_R1     controller1.ButtonR1.pressing()
 #define BUTTON_R2     controller1.ButtonR2.pressing()
 
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*                            CONTROLLER SETTING                              */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 #define CHASSIS_AXIS_X      AXIS_3
 #define CHASSIS_AXIS_Y      AXIS_4
 
-#define LOWER_KEY_UP        BUTTON_R1
-#define LOWER_KEY_DOWN      BUTTON_R2
-#define UPPER_KEY_DOWN      (BUTTON_L2 || BUTTON_B)
-#define UPPER_KEY_UP        (BUTTON_L1 || BUTTON_A)
+#define LIFT_AXIS           AXIS_2
+#define ARM_UP              BUTTON_L1
+#define ARM_DOWN            BUTTON_L2
+#define GRAB_IN             BUTTON_R1           
+#define GRAB_OUT            BUTTON_R2

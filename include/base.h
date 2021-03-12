@@ -3,23 +3,24 @@
 ////////////////////////////// MOTION //////////////////////////////
 void m(motor motorName, double speed, double torq = 100);
 void m_group(motor_group motorGroup, double speed, double torq = 100);
-void is_m_brake_mood(motor motorName, bool isBrake);
+void set_brake_mood(motor motorName, bool isBrake);
 
 void chassis(double left, double right);
-void is_chassis_brake_mood(bool x);
+void set_chassis_brake_mood(bool x);
 void chassis_reset();
 
 void grab_in(double speed);
 void grab_out(double speed);
 void grab_locked();
 
-void low_lift_up(double speed);
-void low_lift_down(double speed);
-void low_lift_locked();
+void arm_up(double speed);
+void arm_down(double speed);
+void arm_locked();
 
-void high_lift_up(double speed);
-void high_lift_down(double speed);
-void high_lift_locked();
+void lift(double speed);
+void lift_up(double speed);
+void lift_down(double speed);
+void lift_locked();
 
 void inert_reset();
 
@@ -47,6 +48,3 @@ void inert_reset();
 #define controller_print(str, x) controller1.Screen.clearScreen();controller1.Screen.setCursor(1, 1);controller1.Screen.print(str);controller1.Screen.print("%d", x);
 
 #define newline controller1.Screen.newLine()
-
-bool isBlueFound();
-bool isRedFound();

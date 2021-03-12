@@ -2,8 +2,6 @@
 #include "auto.h"
 #include <algorithm>
 
-int ballCount = 0;
-
 int sign(double x)
 {
   if(x > 0) return 1;
@@ -13,12 +11,6 @@ int sign(double x)
 
 void chassis_run(double dist, double pw, double turnDeg)
 {
-  // double gyro_kp = 1.5;
-  // double gyro_kd = 1;
-
-  // double move_kp = 0.49;
-  // double move_kd = 3.5;
-
   double gyro_kp = 1.7;
   double gyro_kd = 1.02;
 
@@ -139,90 +131,3 @@ void chassis_turn(double target)
 
   chassis(0, 0);
 }
-
-bool isBallDetected()
-{
-  return swc.value() == 0 ? true : false;
-  // return lit.reflectivity() > 17 ? true : false;
-}
-
-int CountingCallback()
-{
-  ballCount = 0;
-  bool isFirstBallDetected = false;
-  bool flag = false;
-  double lastTime = 0;
-
-  while(true)
-  {
-    if(isBallDetected() == true && flag == false)
-    {
-      double currentTime = Brain.timer(sec);
-      if(ballCount == 0)
-      {
-        isFirstBallDetected = true;
-        lastTime = currentTime;
-      } 
-      else if(currentTime - lastTime < 0.37) continue;
-      lastTime = currentTime;
-      ballCount++;
-      flag = true;
-    }
-    else if(isBallDetected() == false && flag == true)
-    {
-      flag = false;
-    }
-    wait(30, msec);
-  }
-  return 0;
-}
-
-int BallOutCallback()
-{
-  wt(1.17);
-  low_lift_down(80);
-  grab_out(80);
-  high_lift_down(80);
-  wt(1.77);
-  stopshooting;
-  return 0;
-}
-
-int DisplayCallback()
-{
-  controller1.Screen.clearScreen();
-  controller1.Screen.setCursor(controller1.Screen.row(), 1);
-  controller1.Screen.setCursor(1, 1);
-  controller1.Screen.print("ballCount: %d", ballCount);
-  
-  controller1.Screen.setCursor(controller1.Screen.row(), 3);
-  controller1.Screen.setCursor(3, 1);
-  controller1.Screen.print("rotation:  %f", currentTurn);
-  return 0;
-}
-
-void test()
-{
-  task Counting = task(CountingCallback);
-  
-  while(true)
-  {
-    if(controller1.ButtonA.pressing())
-    {
-      low_lift_up(100);
-      high_lift_up(100);
-      grab_in(100);
-    }
-    else
-    {
-      stopshooting;
-    }
-
-    controller1.Screen.clearScreen();
-    controller1.Screen.setCursor(controller1.Screen.row(), 1);
-    controller1.Screen.setCursor(1, 1);
-    controller1.Screen.print("ballCount: %d", ballCount);
-    wait(20, msec);
-  }
-}
-

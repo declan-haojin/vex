@@ -8,7 +8,7 @@ using namespace vex;
 competition Competition;
 
 void pre_auton(void) {
-  is_chassis_brake_mood(true);
+  set_chassis_brake_mood(true);
   chassis_reset();
   inert_reset();
 }
@@ -31,6 +31,8 @@ void usercontrol(void) {
     {
       chassis_manual();
       lift_manual();
+      grab_manual();
+      arm_manual();
       wait(20, msec); 
       #ifdef DEV
       if(BUTTON_X)
