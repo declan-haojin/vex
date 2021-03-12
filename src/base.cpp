@@ -1,5 +1,26 @@
 #include "base.h"
 
+class Motor
+{
+  public:
+    int port;
+    char type;
+    bool reverse;
+
+    double set_brake_mood(String mood);
+    double run(double speed);
+};
+
+Motor:Motor(int port, char type, bool reverse)
+{
+  motor motorname = motor()
+}
+
+double Motor::set_brake_mood(String mood)
+{
+  
+}
+
 void m(motor motorName, double speed, double torq)
 {
   motorName.setMaxTorque(torq, pct);
