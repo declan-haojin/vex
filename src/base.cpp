@@ -11,10 +11,10 @@ class Motor
     double run(double speed);
 };
 
-Motor:Motor(int port, char type, bool reverse)
-{
-  motor motorname = motor()
-}
+// Motor:Motor(int port, char type, bool reverse)
+// {
+//   motor motorname = motor()
+// }
 
 double Motor::set_brake_mood(String mood)
 {
