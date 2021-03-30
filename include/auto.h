@@ -6,9 +6,11 @@
 int sign(double x);
 
 void chassis_run(double dist, double k, double turnDeg);
-void chassis_shift(double dist, double pw, double turnDeg);
+void chassis_run1(double dist, double k, double turnDeg, double trig);
 void chassis_turn(double target);
+void chassis_arc();
 
-
-void red_far();
 void blue_far();
+void blue_close();
+void red_far();
+void red_close();

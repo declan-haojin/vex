@@ -28,10 +28,10 @@ void prepare_session();
 #define BUTTON_R1     controller1.ButtonR1.pressing()
 #define BUTTON_R2     controller1.ButtonR2.pressing()
 
-#define CHASSIS_AXIS_X      AXIS_2
-#define CHASSIS_AXIS_Y      AXIS_1
+#define CHASSIS_AXIS_X      AXIS_3
+#define CHASSIS_AXIS_Y      AXIS_4
 
-#define LIFT_AXIS           AXIS_3
+#define LIFT_AXIS           AXIS_2
 #define LIFT_UP             BUTTON_UP
 #define LIFT_DOWN           BUTTON_DOWN
 #define ARM_UP              BUTTON_L1

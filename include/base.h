@@ -8,8 +8,6 @@ void chassis(double left, double right);
 void set_chassis_brake_mood(bool x);
 void chassis_reset();
 
-void shift(double front, double back);
-
 void grab_in(double speed);
 void grab_out(double speed);
 void grab_locked();
@@ -33,6 +31,8 @@ void imu_reset();
 #define RB_DEG motorRB.rotation(deg)
 #define LT_DEG motorLT.rotation(deg)
 #define AR_DEG motorAR.rotation(deg)
+#define LG_DEG motorLG.rotation(deg)
+#define RG_DEG motorRG.rotation(deg)
 
 #define LF_V abs(motorLF.velocity(pct))
 #define LB_V abs(motorLB.velocity(pct))

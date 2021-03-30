@@ -5,11 +5,7 @@ void chassis_manual()
 {
   double left = SENS * ( CHASSIS_AXIS_X + CHASSIS_AXIS_Y );
   double right = SENS * ( CHASSIS_AXIS_X - CHASSIS_AXIS_Y );
-
-  if(BUTTON_LEFT)                               shift(-100, 100);
-  else if(BUTTON_RIGHT)                         shift(100, -100);
-  else if(fabs(left) > 17 && fabs(right) > 17)  chassis(left, right);
-  else                                          chassis(0, 0);
+  chassis(left, right);
 }
 
 void grab_manual()

@@ -15,7 +15,7 @@ void pre_auton(void) {
 }
 
 void autonomous(void) {
-  
+  red_close();
 }
 
 void usercontrol(void) {
@@ -29,13 +29,13 @@ void usercontrol(void) {
     }
     else
     {
-      // controller1.Screen.clearScreen();
-      // controller1.Screen.setCursor(1, 1);
-      // controller1.Screen.print("imu: %3f", imu.rotation());
-      // controller1.Screen.newLine();
-      // controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
-      // controller1.Screen.newLine();
-      // controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
+      controller1.Screen.clearScreen();
+      controller1.Screen.setCursor(1, 1);
+      controller1.Screen.print("imu: %3f", imu.rotation());
+      controller1.Screen.newLine();
+      controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
+      controller1.Screen.newLine();
+      controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
       chassis_manual();
       lift_manual();
       grab_manual();
@@ -44,11 +44,13 @@ void usercontrol(void) {
       #ifdef DEV
       if(BUTTON_X)
       {
+        
+
         // chassis(80, 80);
         // lift_reset();
         // grab_in(100);
-        // red_close();
-        chassis_run(1000, 1, 0);
+        red_close();
+        // chassis_run(1000, 1, 0);
         // imu_reset();
         // chassis_turn(135.7);
       }
@@ -59,7 +61,6 @@ void usercontrol(void) {
         chassis_reset();
         lift_reset();
       }
-      else chassis(0, 0);
       #endif
     }
   }
