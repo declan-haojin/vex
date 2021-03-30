@@ -55,7 +55,7 @@ void approach(double totalDis, double pw)
   chassis_reset();
   float kp = 0.9;
   float vx = 0;
-  float xlasterror;
+  float xlasterror = 0;
   while(true)
   {
     double turnPower;

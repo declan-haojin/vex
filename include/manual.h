@@ -4,8 +4,7 @@ void chassis_manual();
 void grab_manual();
 void lift_manual();
 void arm_manual();
-
-// void vision_manual();
+void arm_auto(double h);
 
 int detect_greatest_pitch_angle_callback();
 
@@ -29,10 +28,12 @@ void prepare_session();
 #define BUTTON_R1     controller1.ButtonR1.pressing()
 #define BUTTON_R2     controller1.ButtonR2.pressing()
 
-#define CHASSIS_AXIS_X      AXIS_3
-#define CHASSIS_AXIS_Y      AXIS_4
+#define CHASSIS_AXIS_X      AXIS_2
+#define CHASSIS_AXIS_Y      AXIS_1
 
-#define LIFT_AXIS           AXIS_2
+#define LIFT_AXIS           AXIS_3
+#define LIFT_UP             BUTTON_UP
+#define LIFT_DOWN           BUTTON_DOWN
 #define ARM_UP              BUTTON_L1
 #define ARM_DOWN            BUTTON_L2
 #define GRAB_IN             BUTTON_R1           

@@ -10,25 +10,32 @@ competition Competition;
 void pre_auton(void) {
   set_chassis_brake_mood(true);
   chassis_reset();
-  inert_reset();
+  imu_reset();
+  motorAR.resetRotation();
 }
 
 void autonomous(void) {
-  approach(3000, 57.7);
+  
 }
 
 void usercontrol(void) {
-  task detect_greatest_pitch_angle = task(detect_greatest_pitch_angle_callback);
+  // task detect_greatest_pitch_angle = task(detect_greatest_pitch_angle_callback);
   bool preSession = true;
-
   while (1) {
     if(preSession)
     {
-      prepare_session();
+      // prepare_session();
       preSession = false;
     }
     else
     {
+      // controller1.Screen.clearScreen();
+      // controller1.Screen.setCursor(1, 1);
+      // controller1.Screen.print("imu: %3f", imu.rotation());
+      // controller1.Screen.newLine();
+      // controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
+      // controller1.Screen.newLine();
+      // controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
       chassis_manual();
       lift_manual();
       grab_manual();
@@ -37,12 +44,22 @@ void usercontrol(void) {
       #ifdef DEV
       if(BUTTON_X)
       {
-        chassis_run(5000, 77.7, 0);
+        // chassis(80, 80);
+        // lift_reset();
+        // grab_in(100);
+        // red_close();
+        chassis_run(1000, 1, 0);
+        // imu_reset();
+        // chassis_turn(135.7);
       }
       else if(BUTTON_Y)
       {
-        inert_reset();
+        imu_reset();
+        motorLT.resetRotation();
+        chassis_reset();
+        lift_reset();
       }
+      else chassis(0, 0);
       #endif
     }
   }

@@ -21,6 +21,7 @@ void chassis(double left, double right)
   m_group(chassisLeft, left);
   m_group(chassisRight, right);
 }
+
 void set_chassis_brake_mood(bool x)
 {
   if(x) //BRAKE
@@ -40,6 +41,14 @@ void chassis_reset()
   chassisRight.resetRotation();
 }
 
+void shift(double front, double back)
+{
+  m(motorLF, front);
+  m(motorLB, -back);
+  m(motorRF, -back);
+  m(motorRB, front);
+}
+
 void grab_in(double speed)
 {
   m_group(grab, speed);
@@ -50,7 +59,7 @@ void grab_out(double speed)
 }
 void grab_locked()
 {
-  grab.stop(hold);
+  m_group(grab, 1, 0);
 }
 
 
@@ -68,7 +77,28 @@ void lift_down(double speed)
 }
 void lift_locked()
 {
-  motorLT.stop(hold);
+  m(motorLT, 1, 0);
+}
+void lift_auto()//1777
+{
+  grab_in(10);
+  while(LIFT_MAX - LT_DEG > 3.7)
+  {
+    if(LT_DEG > LIFT_MAX*6/7) lift_up(37);
+    // else if(fabs(LT_DEG) > LIFT_MAX*1/7) lift_up(97.77);
+    else lift_up(100);
+  }
+  lift_locked();
+  grab_locked();
+}
+void lift_reset()
+{
+  m(motorLT, -100, 1);
+  wait(3, sec);
+  m(motorLT, 20, 90);
+  wait(1, sec);
+  lift_locked();
+  motorLT.resetRotation();
 }
 
 void arm_up(double speed)
@@ -81,12 +111,13 @@ void arm_down(double speed)
 }
 void arm_locked()
 {
-  motorAR.stop(hold);
+  m(motorAR, 1, 0);
 }
 
-void inert_reset()
+
+void imu_reset()
 {
-  inert.calibrate();
-  while (inert.isCalibrating()){}
+  imu.calibrate();
+  while (imu.isCalibrating()){}
 }
           

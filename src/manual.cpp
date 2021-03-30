@@ -6,31 +6,10 @@ void chassis_manual()
   double left = SENS * ( CHASSIS_AXIS_X + CHASSIS_AXIS_Y );
   double right = SENS * ( CHASSIS_AXIS_X - CHASSIS_AXIS_Y );
 
-  //anti-falling session
-  if(inert.pitch() > 20.7)
-  {
-    while(inert.pitch() > 7)
-    {
-      m(motorLB, -70);
-      m(motorRB, -70);
-    }
-    m(motorLB, 0);
-    m(motorRB, 0);
-  }
-  else if(inert.pitch() < -20.7)
-  {
-    while(inert.pitch() < -7)
-    {
-      m(motorLF, 70);
-      m(motorRF, 70);
-    }
-    m(motorLF, 0);
-    m(motorRF, 0);
-  }
-  else
-  {
-    chassis(left, right);
-  }
+  if(BUTTON_LEFT)                               shift(-100, 100);
+  else if(BUTTON_RIGHT)                         shift(100, -100);
+  else if(fabs(left) > 17 && fabs(right) > 17)  chassis(left, right);
+  else                                          chassis(0, 0);
 }
 
 void grab_manual()
@@ -40,17 +19,46 @@ void grab_manual()
   else                      grab_locked();
 }
 
+bool flag = false;
+
+int lift_auto_down_callback()
+{
+  while(flag)
+  {
+    while(fabs(LT_DEG) < LIFT_MAX - 7)
+    {
+      if(fabs(LT_DEG) < 100) lift_down(50);
+      else lift_down(100);
+    }
+    lift_locked();
+    flag = false;
+  }
+  return 0;
+}
+
 void lift_manual()
 {
-  if(abs(LIFT_AXIS) > 20)   lift(LIFT_AXIS);
-  else                      lift_locked();
+  if(BUTTON_UP)
+  {
+    lift_auto();
+  }             
+  else if(BUTTON_DOWN)      
+  {
+    flag = true;
+  }
+  else if(abs(LIFT_AXIS) > 20)
+  {
+    lift(LIFT_AXIS);
+  }   
+  else lift_locked();
 }
 
 void arm_manual()
 {
-  if(ARM_UP)                arm_up(ARM_V);
-  else if(ARM_DOWN)         arm_down(ARM_V);
-  else                      arm_locked();          
+  if(ARM_UP)                          arm_up(ARM_V);
+  else if(ARM_DOWN)                   arm_down(ARM_V);
+  else if(motorAR.rotation(deg) < 157) m(motorAR, -10, 7);
+  else arm_locked();         
 }
 
 int greatestPitchAngle = 0;
@@ -58,7 +66,7 @@ int detect_greatest_pitch_angle_callback()
 {
   while(true)
   {
-    double tmpPitch = inert.pitch();
+    double tmpPitch = imu.pitch();
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(1, 1);
     controller1.Screen.print("Current pitch:  %f", tmpPitch);
@@ -117,13 +125,13 @@ void self_check()
     motorLT.installed() ? Brain.Screen.setPenColor(green) : Brain.Screen.setPenColor(red);
     Brain.Screen.print("Name: motorLT   Port: %2d   isInstalled: %s", motorLT.index() + 1, motorLT.installed() ? "true" : "false");
     
-    // Brain.Screen.setPenColor(white);
-    // Brain.Screen.newLine();
-    // Brain.Screen.print("Number of sensor installed: %d", numInert);
-    // Brain.Screen.newLine();
+    Brain.Screen.setPenColor(white);
+    Brain.Screen.newLine();
+    Brain.Screen.print("Number of sensor installed: %d", numInert);
+    Brain.Screen.newLine();
 
-    // inert.installed() ? Brain.Screen.setPenColor(green) : Brain.Screen.setPenColor(red);
-    // Brain.Screen.print("Inertial Sensor Port: %2d   isInstalled: %s", inert.index() + 1, inert.installed() ? "true" : "false");
+    imu.installed() ? Brain.Screen.setPenColor(green) : Brain.Screen.setPenColor(red);
+    Brain.Screen.print("Inertial Sensor Port: %2d   isInstalled: %s", imu.index() + 1, imu.installed() ? "true" : "false");
     Brain.Screen.newLine();
 
     Brain.Screen.setPenColor(white);

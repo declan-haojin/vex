@@ -9,12 +9,12 @@ int sign(double x)
   return 0;
 }
 
-void chassis_run(double dist, double pw, double turnDeg)
+void chassis_run(double dist, double k, double turnDeg)
 {
-  double gyro_kp = 1.7;
-  double gyro_kd = 1.02;
+  double gyro_kp = 0.7;
+  double gyro_kd = 2;
 
-  double move_kp = 0.49;
+  double move_kp = 0.37;
   double move_kd = 3.5;
 
   double currentDist = 0;
@@ -46,6 +46,75 @@ void chassis_run(double dist, double pw, double turnDeg)
     moveLastError = moveError;
     gyroLastError = gyroError;
 
+    movePower = (move_kp*moveError + move_kd*diffDist) * k;
+    turnPower = (gyro_kp*gyroError + gyro_kd*diffTurn) * k;
+
+    if(moveError < 3 && fabs(diffDist) < 0.1) break;
+
+    if(dist > 0)
+    {
+      if(currentDist > 0.1*fabs(dist)) //查的距离还比较远
+      {
+        chassis(movePower + turnPower, movePower - turnPower);
+      }
+      else
+      {
+        chassis(movePower * 0.7 + turnPower, movePower * 0.7 - turnPower);
+      }
+    }
+    else
+    {
+      if(currentDist > 0.1*fabs(dist)) //查的距离还比较远
+      {
+        chassis(-movePower + turnPower, -movePower - turnPower);
+      }
+      else
+      {
+        chassis(-movePower * 0.7 + turnPower, -movePower * 0.7 - turnPower);
+      }
+    }
+    wait(1, msec);
+  }
+  chassis(0, 0);
+}
+
+void chassis_shift(double dist, double pw, double turnDeg)
+{
+  double gyro_kp = 1.7;
+  double gyro_kd = 1.02;
+
+  double move_kp = 0.49;
+  double move_kd = 3.5;
+
+  double currentDist = 0;
+  double diffTurn;
+  double diffDist;
+  double turnPower;
+  double movePower;
+  double gyroLastError;
+  double moveLastError;
+  
+  double moveError = fabs(dist) - fabs(currentDist);
+  double gyroError = turnDeg - currentTurn;
+
+  chassis_reset();
+  
+  gyroLastError = gyroError;
+  moveLastError = moveError;
+
+  while(true)
+  {
+    currentDist = (fabs(LF_DEG) + fabs(LB_DEG) + fabs(RF_DEG) + fabs(RB_DEG)) * 0.25;
+    
+    moveError = fabs(dist) - fabs(currentDist);
+    gyroError = turnDeg - currentTurn;
+
+    diffDist = moveError - moveLastError;
+    diffTurn = gyroError - gyroLastError;
+
+    moveLastError = moveError;
+    gyroLastError = gyroError;
+
     movePower = move_kp*moveError + move_kd*diffDist;
     turnPower = gyro_kp*gyroError + gyro_kd*diffTurn;
 
@@ -55,33 +124,33 @@ void chassis_run(double dist, double pw, double turnDeg)
     {
       if(currentDist > 0.1*fabs(dist)) //查的距离还比较远
       {
-        chassis(pw + turnPower, pw - turnPower);
+        shift(pw + turnPower, pw-turnPower);
       }
       else
       {
-        chassis(pw * 0.7 + turnPower, pw * 0.7 - turnPower);
+        shift(pw*0.7 + turnPower, pw*0.7-turnPower);
       }
     }
     else
     {
       if(currentDist > 0.1*fabs(dist)) //查的距离还比较远
       {
-        chassis(-pw + turnPower, -pw - turnPower);
+        shift(-pw + turnPower, -pw-turnPower);
       }
       else
       {
-        chassis(-pw * 0.7 + turnPower, -pw * 0.7 - turnPower);
+        shift(-pw*0.7 + turnPower, -pw*0.7-turnPower);
       }
     }
     wait(1, msec);
   }
-  chassis(0, 0);
+  shift(0, 0);
 }
 
 void chassis_turn(double target)
 {
-  double kp = 1.7;
-  double ki = 0.01;//30;
+  double kp = 0.6;
+  double ki = 1;//30;
   double kd = 2;//20;
 
   int timeUsed = 0;
@@ -98,7 +167,7 @@ void chassis_turn(double target)
 
   bool isFinished;
   double timeTorl = fabs(error) < 20 ? 700 : fabs(error) * 27;
-  double pw;
+  double movePower;
 
   lastError = error;
   isFinished = (error == 0);
@@ -121,13 +190,28 @@ void chassis_turn(double target)
       i = 0;
     }
 
-    pw = kp * error + kd * diffError + ki * i;
-    pw = fabs(pw) > lim ? sign(pw) * lim : pw;
+    movePower = kp * error + kd * diffError + ki * i;
+    movePower = fabs(movePower) > lim ? sign(movePower) * lim : movePower;
 
-    chassis(pw, -pw);
+    chassis(movePower, -movePower);
 
     wait(10, msec);
   }
-
   chassis(0, 0);
+}
+
+void red_far()
+{
+  // grab_in(97.7);
+  // chassis_run(797, 27.7, 0);
+
+  imu_reset();
+  chassis_turn(-30);
+
+  // chassis_run(-1000, 57.7, 0);
+}
+
+void blue_far()
+{
+
 }
