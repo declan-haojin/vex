@@ -19,49 +19,45 @@ void autonomous(void) {
 }
 
 void usercontrol(void) {
-  // task detect_greatest_pitch_angle = task(detect_greatest_pitch_angle_callback);
   bool preSession = true;
+  bool isAuto = false;
   while (1) {
     if(preSession)
     {
-      // prepare_session();
+      prepare_session();
       preSession = false;
     }
     else
     {
-      // controller1.Screen.clearScreen();
-      // controller1.Screen.setCursor(1, 1);
-      // controller1.Screen.print("imu: %3f", imu.rotation());
-      // controller1.Screen.newLine();
-      // controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
-      // controller1.Screen.newLine();
-      // controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
+      if(swc.value() == false && !isAuto)
+      {
+        isAuto = true;
+        red_far();
+      }
+      if(BUTTON_X)
+      {
+        chassis_reset();
+        lift_reset();
+        motorAR.resetRotation();
+        imu_reset();
+      }
+
       chassis_manual();
       lift_manual();
       grab_manual();
       arm_manual();
-      wait(20, msec); 
-      #ifdef DEV
-      if(BUTTON_X)
-      {
-        // chassis(80, 80);
-        // lift_reset();
-        // grab_in(100);
-        // red_close();
-        chassis_run(1000, 1, 0);
-        // imu_reset();
-        // chassis_turn(135.7);
-      }
-      else if(BUTTON_Y)
-      {
-        imu_reset();
-        motorLT.resetRotation();
-        chassis_reset();
-        lift_reset();
-      }
-      else chassis(0, 0);
-      #endif
+
+      controller1.Screen.clearScreen();
+      controller1.Screen.setCursor(1, 1);
+      // controller1.Screen.print("imu: %3f", imu.rotation());
+      // controller1.Screen.newLine();
+      controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
+      controller1.Screen.newLine();
+      // controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
+      // controller1.Screen.newLine();
+      controller1.Screen.print("arm: %3f", AR_DEG);
     }
+    wait(20, msec); 
   }
 }
 

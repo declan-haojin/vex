@@ -4,9 +4,8 @@ void chassis_manual();
 void grab_manual();
 void lift_manual();
 void arm_manual();
-void arm_auto(double h);
-
-int detect_greatest_pitch_angle_callback();
+void arm_h1();
+void arm_h2();
 
 void self_check();
 void prepare_session();
@@ -33,8 +32,11 @@ void prepare_session();
 
 #define LIFT_AXIS           AXIS_3
 #define LIFT_UP             BUTTON_UP
-#define LIFT_DOWN           BUTTON_DOWN
 #define ARM_UP              BUTTON_L1
 #define ARM_DOWN            BUTTON_L2
 #define GRAB_IN             BUTTON_R1           
 #define GRAB_OUT            BUTTON_R2
+#define ARM_LOW             BUTTON_LEFT
+#define ARM_HIGH            BUTTON_RIGHT
+#define LEFT_SHIFT          BUTTON_Y
+#define RIGHT_SHIFT         BUTTON_A

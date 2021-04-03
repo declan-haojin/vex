@@ -44,8 +44,8 @@ void chassis_reset()
 void shift(double front, double back)
 {
   m(motorLF, front);
-  m(motorLB, -back);
-  m(motorRF, -back);
+  m(motorLB, back);
+  m(motorRF, back);
   m(motorRB, front);
 }
 
@@ -90,6 +90,9 @@ void lift_auto()//1777
   }
   lift_locked();
   grab_locked();
+  chassis(-37, -37);
+  wait(1, sec);
+  chassis(0, 0);
 }
 void lift_reset()
 {

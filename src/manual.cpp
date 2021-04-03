@@ -6,8 +6,8 @@ void chassis_manual()
   double left = SENS * ( CHASSIS_AXIS_X + CHASSIS_AXIS_Y );
   double right = SENS * ( CHASSIS_AXIS_X - CHASSIS_AXIS_Y );
 
-  if(BUTTON_LEFT)                               shift(-100, 100);
-  else if(BUTTON_RIGHT)                         shift(100, -100);
+  if(LEFT_SHIFT)                                shift(-100, 100);
+  else if(RIGHT_SHIFT)                          shift(100, -100);
   else if(fabs(left) > 17 && fabs(right) > 17)  chassis(left, right);
   else                                          chassis(0, 0);
 }
@@ -19,33 +19,12 @@ void grab_manual()
   else                      grab_locked();
 }
 
-bool flag = false;
-
-int lift_auto_down_callback()
-{
-  while(flag)
-  {
-    while(fabs(LT_DEG) < LIFT_MAX - 7)
-    {
-      if(fabs(LT_DEG) < 100) lift_down(50);
-      else lift_down(100);
-    }
-    lift_locked();
-    flag = false;
-  }
-  return 0;
-}
-
 void lift_manual()
 {
   if(BUTTON_UP)
   {
     lift_auto();
   }             
-  else if(BUTTON_DOWN)      
-  {
-    flag = true;
-  }
   else if(abs(LIFT_AXIS) > 20)
   {
     lift(LIFT_AXIS);
@@ -53,30 +32,45 @@ void lift_manual()
   else lift_locked();
 }
 
+void arm_h1()
+{
+  double err = ARM_H1;
+  double k = 0.7;
+  double sign = 1;
+
+  if(AR_DEG > ARM_H1) sign = -1;
+
+  while(err > 3)
+  {
+    err = fabs(ARM_H1 - AR_DEG);
+    m(motorAR, err * k * sign);
+    if(LT_DEG < 200) m(motorLT, 100);
+    else lift_locked();
+  }
+}
+
+void arm_h2()
+{
+  double err = ARM_H2;
+  double k = 0.7;
+  double sign = 1;
+
+  if(AR_DEG > ARM_H1) sign = -1;
+  while(err > 3)
+  {
+    err = fabs(ARM_H2 - AR_DEG);
+    m(motorAR, err * k * sign);
+  }
+}
+
 void arm_manual()
 {
   if(ARM_UP)                          arm_up(ARM_V);
   else if(ARM_DOWN)                   arm_down(ARM_V);
+  else if(ARM_HIGH)                   arm_h2();
+  else if(ARM_LOW)                    arm_h1();
   else if(motorAR.rotation(deg) < 157) m(motorAR, -10, 7);
   else arm_locked();         
-}
-
-int greatestPitchAngle = 0;
-int detect_greatest_pitch_angle_callback()
-{
-  while(true)
-  {
-    double tmpPitch = imu.pitch();
-    controller1.Screen.clearScreen();
-    controller1.Screen.setCursor(1, 1);
-    controller1.Screen.print("Current pitch:  %f", tmpPitch);
-    controller1.Screen.newLine();
-    controller1.Screen.print("Greatest pitch: %f", tmpPitch > greatestPitchAngle ? tmpPitch : greatestPitchAngle);
-    
-    if(tmpPitch > greatestPitchAngle) greatestPitchAngle = tmpPitch;
-    wait(0.1, sec);
-  }
-  return 0;
 }
              
 void self_check()
@@ -135,11 +129,11 @@ void self_check()
     Brain.Screen.newLine();
 
     Brain.Screen.setPenColor(white);
-    Brain.Screen.print("Press BUTTON_DOWN to skip the self-check...");
+    Brain.Screen.print("Press BUTTON_A to skip the self-check...");
 
     if(numMotor == 8) return;
 
-    if(BUTTON_DOWN) return;
+    if(BUTTON_A) return;
     wait(100, msec);
   }
 }

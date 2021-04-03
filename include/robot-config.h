@@ -6,6 +6,8 @@ using namespace std;
 #define ARM_V                           100
 #define GRAB_V                          100
 #define LIFT_MAX                        1907
+#define ARM_H1                          400
+#define ARM_H2                          500
 
 #define MOTOR_LF_PORT                   PORT8
 #define MOTOR_LB_PORT                   PORT11
