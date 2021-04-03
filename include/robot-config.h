@@ -5,7 +5,7 @@ using namespace std;
 #define SENS                            1.0
 #define ARM_V                           100
 #define GRAB_V                          100
-#define LIFT_MAX                        1907
+#define LIFT_MAX                        690
 #define ARM_H1                          400
 #define ARM_H2                          500
 

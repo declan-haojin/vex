@@ -44,22 +44,8 @@ void arm_h1()
   {
     err = fabs(ARM_H1 - AR_DEG);
     m(motorAR, err * k * sign);
-    if(LT_DEG < 200) m(motorLT, 100);
+    if(LT_DEG < 200) m(motorLT, 90);
     else lift_locked();
-  }
-}
-
-void arm_h2()
-{
-  double err = ARM_H2;
-  double k = 0.7;
-  double sign = 1;
-
-  if(AR_DEG > ARM_H1) sign = -1;
-  while(err > 3)
-  {
-    err = fabs(ARM_H2 - AR_DEG);
-    m(motorAR, err * k * sign);
   }
 }
 
@@ -67,7 +53,6 @@ void arm_manual()
 {
   if(ARM_UP)                          arm_up(ARM_V);
   else if(ARM_DOWN)                   arm_down(ARM_V);
-  else if(ARM_HIGH)                   arm_h2();
   else if(ARM_LOW)                    arm_h1();
   else if(motorAR.rotation(deg) < 157) m(motorAR, -10, 7);
   else arm_locked();         

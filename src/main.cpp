@@ -47,15 +47,15 @@ void usercontrol(void) {
       grab_manual();
       arm_manual();
 
-      controller1.Screen.clearScreen();
-      controller1.Screen.setCursor(1, 1);
-      // controller1.Screen.print("imu: %3f", imu.rotation());
+      // controller1.Screen.clearScreen();
+      // controller1.Screen.setCursor(1, 1);
+      // // controller1.Screen.print("imu: %3f", imu.rotation());
+      // // controller1.Screen.newLine();
+      // controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
       // controller1.Screen.newLine();
-      controller1.Screen.print("lift:%3f", motorLT.rotation(deg));
-      controller1.Screen.newLine();
-      // controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
-      // controller1.Screen.newLine();
-      controller1.Screen.print("arm: %3f", AR_DEG);
+      // // controller1.Screen.print("dist:%3f", (LB_DEG+LF_DEG+RF_DEG+RB_DEG)*0.25);
+      // // controller1.Screen.newLine();
+      // controller1.Screen.print("arm: %3f", AR_DEG);
     }
     wait(20, msec); 
   }
