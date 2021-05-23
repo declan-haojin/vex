@@ -7,4 +7,4 @@ The code is written by [Haojin Li (Declan)](https://lihaojin.cn/) and is license
 
 ---
 
-[Check out the latest progress](https://github.com/declan-haojin/vexcode-changeup/projects/3)
+[Check out the latest progress](https://github.com/declan-haojin/vex/projects/1)
