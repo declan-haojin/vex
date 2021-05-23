@@ -12,10 +12,10 @@ int sign(double x)
 void chassis_run(double dist, double k, double turnDeg)
 {
   double gyro_kp = 0.7;
-  double gyro_kd = 2;
+  double gyro_kd = 0.5;
 
-  double move_kp = 0.37;
-  double move_kd = 3.5;
+  double move_kp = 0.15;
+  double move_kd = 0;
 
   double currentDist = 0;
   double diffTurn;
@@ -49,7 +49,7 @@ void chassis_run(double dist, double k, double turnDeg)
     movePower = (move_kp*moveError + move_kd*diffDist) * k;
     turnPower = (gyro_kp*gyroError + gyro_kd*diffTurn) * k;
 
-    if(moveError < 3 && fabs(diffDist) < 0.1) break;
+    if(moveError < 7 && fabs(diffDist) < 0.1) break;
 
     if(dist > 0)
     {
@@ -78,80 +78,11 @@ void chassis_run(double dist, double k, double turnDeg)
   chassis(0, 0);
 }
 
-void chassis_shift(double dist, double pw, double turnDeg)
-{
-  double gyro_kp = 1.7;
-  double gyro_kd = 1.02;
-
-  double move_kp = 0.49;
-  double move_kd = 3.5;
-
-  double currentDist = 0;
-  double diffTurn;
-  double diffDist;
-  double turnPower;
-  double movePower;
-  double gyroLastError;
-  double moveLastError;
-  
-  double moveError = fabs(dist) - fabs(currentDist);
-  double gyroError = turnDeg - currentTurn;
-
-  chassis_reset();
-  
-  gyroLastError = gyroError;
-  moveLastError = moveError;
-
-  while(true)
-  {
-    currentDist = (fabs(LF_DEG) + fabs(LB_DEG) + fabs(RF_DEG) + fabs(RB_DEG)) * 0.25;
-    
-    moveError = fabs(dist) - fabs(currentDist);
-    gyroError = turnDeg - currentTurn;
-
-    diffDist = moveError - moveLastError;
-    diffTurn = gyroError - gyroLastError;
-
-    moveLastError = moveError;
-    gyroLastError = gyroError;
-
-    movePower = move_kp*moveError + move_kd*diffDist;
-    turnPower = gyro_kp*gyroError + gyro_kd*diffTurn;
-
-    if(moveError < 3 && fabs(diffDist) < 0.1) break;
-
-    if(dist > 0)
-    {
-      if(currentDist > 0.1*fabs(dist)) //查的距离还比较远
-      {
-        shift(pw + turnPower, pw-turnPower);
-      }
-      else
-      {
-        shift(pw*0.7 + turnPower, pw*0.7-turnPower);
-      }
-    }
-    else
-    {
-      if(currentDist > 0.1*fabs(dist)) //查的距离还比较远
-      {
-        shift(-pw + turnPower, -pw-turnPower);
-      }
-      else
-      {
-        shift(-pw*0.7 + turnPower, -pw*0.7-turnPower);
-      }
-    }
-    wait(1, msec);
-  }
-  shift(0, 0);
-}
-
 void chassis_turn(double target)
 {
-  double kp = 0.6;
-  double ki = 1;//30;
-  double kd = 2;//20;
+  double kp = 0.7;
+  double ki = 0;
+  double kd = 0.5;
 
   int timeUsed = 0;
 
@@ -200,18 +131,94 @@ void chassis_turn(double target)
   chassis(0, 0);
 }
 
+void s()
+{
+  while(true){if(controller1.ButtonA.pressing()) break;}
+}
+
 void red_far()
 {
-  // grab_in(97.7);
-  // chassis_run(797, 27.7, 0);
+  double t = Brain.timer(sec);
+  grab_out(100);
+  arm_up(100);
+  wt(1.5);
+  grab_in(100);
+  wt(0.27);
+  while(AR_DEG > 50) arm_down(100);
 
-  imu_reset();
-  chassis_turn(-30);
+  // s();
 
-  // chassis_run(-1000, 57.7, 0);
+
+  chassis_reset();
+  
+  while(fabs(LF_DEG)+fabs(LB_DEG)+fabs(RF_DEG)+fabs(RB_DEG) < 4*1200){chassis(30, 30);}
+  chassis(0, 0);
+
+  // s();
+  // chassis_run(1300, 1.5, 1);
+
+  // s();
+  wt(0.27);
+  chassis_turn(155);
+
+  wt(0.27);
+
+  // s();
+
+  chassis_run(1100, 1, 155);
+
+  // motorLG.resetRotation();
+  // while(fabs(motorLG.rotation(deg)) < 50){grab_out(50);}
+  grab_locked();
+
+
+  // s();
+
+  lift_auto();
+
+  controller1.Screen.clearScreen();
+  controller1.Screen.setCursor(1, 1);
+  controller1.Screen.print("total time: %3f", Brain.timer(sec) - t);
 }
 
 void blue_far()
 {
+  double t = Brain.timer(sec);
+  grab_out(100);
+  arm_up(100);
+  wt(1.5);
+  grab_in(100);
+  wt(0.27);
+  while(AR_DEG > 50) arm_down(100);
 
+  chassis_reset();
+  
+  while(fabs(LF_DEG)+fabs(LB_DEG)+fabs(RF_DEG)+fabs(RB_DEG) < 4*1200){chassis(30, 30);}
+  chassis(0, 0);
+
+  // s();
+  // chassis_run(1300, 1.5, 1);
+
+  // s();
+  wt(0.47);
+  chassis_turn(-150);
+
+  wt(0.47);
+
+  // s();
+
+  chassis_run(1000, 1, -150);
+
+  // motorLG.resetRotation();
+  // while(fabs(motorLG.rotation(deg)) < 50){grab_out(50);}
+  grab_locked();
+
+
+  // s();
+
+  lift_auto();
+
+  controller1.Screen.clearScreen();
+  controller1.Screen.setCursor(1, 1);
+  controller1.Screen.print("total time: %3f", Brain.timer(sec) - t);
 }

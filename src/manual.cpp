@@ -23,12 +23,12 @@ void lift_manual()
 {
   if(BUTTON_UP)
   {
-    lift_auto();
+    // lift_auto();
   }             
   else if(abs(LIFT_AXIS) > 20)
   {
     lift(LIFT_AXIS);
-  }   
+  }
   else lift_locked();
 }
 

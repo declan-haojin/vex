@@ -77,29 +77,30 @@ void lift_down(double speed)
 }
 void lift_locked()
 {
-  m(motorLT, 1, 0);
+  m(motorLT, -1, 0);
 }
 void lift_auto()//1777
 {
-  grab_in(10);
+  grab_out(10);
   while(LIFT_MAX - LT_DEG > 3.7)
   {
-    if(LT_DEG > LIFT_MAX*5/7) lift_up(20);
-    else if(fabs(LT_DEG) > LIFT_MAX*3/7) lift_up(50);
+    if(LT_DEG > LIFT_MAX*5/7) lift_up(40);
+    else if(fabs(LT_DEG) > LIFT_MAX*4/7) lift_up(80);
     else lift_up(100);
   }
   lift_locked();
   grab_locked();
-  chassis(-37, -37);
-  wait(2, sec);
+  wait(0.7, sec);
+  chassis(-27, -27);
+  wait(1.5, sec);
   chassis(0, 0);
 }
 void lift_reset()
 {
-  m(motorLT, -100, 1);
+  m(motorLT, -100, 2);
   wait(3, sec);
   m(motorLT, 20, 90);
-  wait(1, sec);
+  wait(0.5, sec);
   lift_locked();
   motorLT.resetRotation();
 }

@@ -2,23 +2,23 @@ using namespace vex;
 using namespace std;
 
 #define DEV
-#define SENS                            1.0
+#define SENS                            0.507
 #define ARM_V                           100
 #define GRAB_V                          100
-#define LIFT_MAX                        690
+#define LIFT_MAX                        860
 #define ARM_H1                          400
 #define ARM_H2                          500
 
 #define MOTOR_LF_PORT                   PORT8
-#define MOTOR_LB_PORT                   PORT11
-#define MOTOR_RF_PORT                   PORT19
-#define MOTOR_RB_PORT                   PORT13
-#define MOTOR_LG_PORT                   PORT5
-#define MOTOR_RG_PORT                   PORT6
+#define MOTOR_LB_PORT                   PORT20
+#define MOTOR_RF_PORT                   PORT10
+#define MOTOR_RB_PORT                   PORT12
+#define MOTOR_LG_PORT                   PORT14
+#define MOTOR_RG_PORT                   PORT5
 #define MOTOR_LT_PORT                   PORT16
-#define MOTOR_AR_PORT                   PORT12  
-#define INERTIAL_PORT                   PORT10
-#define SWITCH_PORT                     A
+#define MOTOR_AR_PORT                   PORT1  
+#define INERTIAL_PORT                   PORT18
+#define SWITCH_PORT                     B
 
 #define MOTOR_LF_TYPE                   ratio18_1
 #define MOTOR_LB_TYPE                   ratio18_1

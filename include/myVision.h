@@ -1,2 +1,1 @@
-
-void approach(double totalDis, double pw);
+  void approach(double totalDis, double pw);
